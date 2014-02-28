@@ -8,16 +8,13 @@ include Magick
 
 class Time
   def toAngle
-    self.utc
-    angle = self.hour * 15
-    angle += self.min / 4
-    self.localtime
+    angle = self.utc.hour * 15
+    angle += self.utc.min / 4
     return angle
   end
 
   def offsetAngle
-    self.localtime
-    return self.gmt_offset / 240
+    return self.localtime.gmt_offset / 240
   end
 end
 
@@ -38,7 +35,10 @@ OptionParser.new do |opts|
     end
   end
   
-  puts opts.program_name
+  opts.on("-m", "--midnight", "rotates everything that the location on the upper side has midnight") do
+    options[:local] = true
+    options[:outerAngle] = 0
+  end
 
   opts.on("-z", "--zone=N", Integer, "specifie timezone to be upside") do |n|
     options[:local] = true
@@ -52,6 +52,15 @@ OptionParser.new do |opts|
     options[:outerAngle] = options[:innerAngle]
     options[:innerAngle] = time.offsetAngle
     options[:outerAngle] += options[:innerAngle]
+  end
+
+  opts.on("-o", "--outputpath=STRING", String, "sets the path wehre the outputfile will be found afterwards") do |path|
+    output = path
+  end
+
+  opts.on("--artist", "tells you that the picture was made by Randall Munroe (xkcd.com/now)") do
+    puts "picture by Randall Munroe"
+    puts "  http://xkcd.com/now"
   end
 end.parse!
 
