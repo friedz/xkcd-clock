@@ -22,6 +22,8 @@ class Time
 end
 
 dimension = {width: 1366, height: 768}
+output = "/home/friedrich/.i3/"
+pictures = "/home/friedrich/dokumente/projekte/xkcd-clock"
 
 time = Time.now
 options = {}
@@ -35,6 +37,8 @@ OptionParser.new do |opts|
       options[:innerAngle] = n
     end
   end
+  
+  puts opts.program_name
 
   opts.on("-z", "--zone=N", Integer, "specifie timezone to be upside") do |n|
     options[:local] = true
@@ -50,6 +54,8 @@ OptionParser.new do |opts|
     options[:outerAngle] += options[:innerAngle]
   end
 end.parse!
+
+Dir.chdir(pictures)
 
 inside = ImageList.new("inside.png")
 outside = ImageList.new("outside.png")
@@ -70,4 +76,6 @@ inside.crop!(NorthWestGravity, width, height)
 outside.composite!(inside.transparent('white'), 0, 0, OverCompositeOp)
 now = Image.new(dimension[:width],dimension[:height])
 now.composite!(outside, CenterGravity, OverCompositeOp)
+
+Dir.chdir(output)
 now.write("now.png")
