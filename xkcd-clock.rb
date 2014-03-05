@@ -42,14 +42,14 @@ OptionParser.new do |opts|
 
   opts.on("-z", "--zone=N", Integer, "specifie timezone to be upside") do |n|
     options[:local] = true
-    options[:outerAngle] = options[:innerAngle]
-    options[:innerAngle] = - (n * 15)
+    options[:outerAngle] = - options[:innerAngle]
+    options[:innerAngle] = -(n * 15)
     options[:outerAngle] += options[:innerAngle]
   end
 
   opts.on("-l", "--local", "your location up, and turn the outer ring") do
     options[:local] = true
-    options[:outerAngle] = options[:innerAngle]
+    options[:outerAngle] = - options[:innerAngle]
     options[:innerAngle] = - time.offsetAngle
     options[:outerAngle] += options[:innerAngle]
   end
@@ -66,10 +66,10 @@ end.parse!
 
 Dir.chdir(pictures)
 
-inside = ImageList.new("inside.png")
+inside  = ImageList.new("inside.png")
 outside = ImageList.new("outside.png")
-height = inside.rows
-width  = inside.columns
+height  = inside.rows
+width   = inside.columns
 
 
 if options[:local] then
