@@ -54,8 +54,17 @@ OptionParser.new do |opts|
     options[:outerAngle] += options[:innerAngle]
   end
 
-  opts.on("-o", "--outputpath=STRING", String, "sets the path wehre the outputfile will be found afterwards") do |path|
+  opts.on("-p", "--path=STRING", String, "sets the path wehre the outputfile will be found afterwards") do |path|
     output = path
+  end
+
+  opts.on("-u", "--update[=N]", Float, "uptates the image every N minutes, if no time is given the default ist 1 minute") do |min|
+    # need to be implemented
+  end
+
+  opts.on("-d", "--deamonize", "only makes sense in combination with -u") do
+    # to lazy right now
+    # but needs to be done
   end
 
   opts.on("--artist", "tells you that the picture was made by Randall Munroe (xkcd.com/now)") do
